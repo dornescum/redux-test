@@ -6,10 +6,31 @@ function reducer(state, action) {
         return {...state, cart: []}
     }
     if (action.type === DECREASE) {
-        console.log('decrease')
+       let tempCart = [];
+       if (action.payload.amount ===1){
+           // dc nu are match remove din cart
+           tempCart = state.cart.filter((cartItem)=> cartItem.id !== action.payload.id);
+       } else {
+          tempCart = state.cart.map((cartItem)=>{
+               // console.log(cartItem)
+               if (cartItem.id === action.payload.id){
+                   cartItem = {...cartItem, amount: cartItem.amount - 1}
+               }
+               return cartItem
+           });
+       }
+       return {...state, cart: tempCart}
     }
     if (action.type === INCREASE) {
-        console.log('increase')
+        let tempCart = state.cart.map((cartItem)=>{
+            // console.log(cartItem)
+            if (cartItem.id === action.payload.id){
+                // return cartItem cu toate volorile(...spread operator) si adaug la amount!
+                cartItem = {...cartItem, amount: cartItem.amount + 1}
+            }
+            return cartItem
+        });
+       return {...state, cart: tempCart}
     }
     if (action.type === REMOVE) {
         // console.log(action.payload.id)
